@@ -63,13 +63,13 @@ client.on('message', message => {
         }
     }
     if (message.content === '.test') {
-        if (message.member.hasPermission("ADMINISTRATOR"))
+        if (message.member.hasPermission("ADMINISTRATOR")) {
             message.channel.send(embed1);
             message.channel.send(embed2);
             message.channel.send(embed3);
             message.channel.send(embed4);
             message.channel.send('https://discord.gg/UJ7GGB5J32');
-
+            }
         }
 })
 
