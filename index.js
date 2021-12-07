@@ -1,6 +1,7 @@
 console.log('Loading...')
 
-const DiscordJS = require('discord.js');
+const DiscordJS = require('discord.js')
+const { Client, Intents } = require('discord.js');
 const fs = require('fs');
 const cron = require('node-cron');
 
@@ -8,7 +9,11 @@ require('dotenv').config()
 
 const config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
-const client = new DiscordJS.Client();
+const client = new Client({ 
+    intents: [
+        Intents.FLAGS.GUILDS, 
+        Intents.FLAGS.GUILD_MESSAGES
+    ] });
 
 client.on('ready', () => {
     console.log('Bot loggged in as ' + client.user.tag);
@@ -16,6 +21,8 @@ client.on('ready', () => {
     client.user.setActivity(config.activity, { type: 'WATCHING' });
     console.log('Status erfolgreich gesetzt!');
     console.log();
+
+    // client.channels.cache.get('899631284341604353').send('ich bin beleidigt');
 })
 
 const embed1 = new DiscordJS.MessageEmbed()
@@ -40,10 +47,14 @@ const embed4 = new DiscordJS.MessageEmbed()
 
 cron.schedule('0 0,6,12,18 * * *', () => {
     if (member.guild.me.roles.cache.has('917122243346182155')) {
-        client.channels.cache.get('910210588154671194').send(embed1);
-        client.channels.cache.get('910210588154671194').send(embed2);
-        client.channels.cache.get('910210588154671194').send(embed3);
-        client.channels.cache.get('910210588154671194').send(embed4);
+        client.channels.cache.get('910210588154671194').send({
+            embeds: [
+                embed1,
+                embed2,
+                embed3,
+                embed4
+            ]
+        });
         client.channels.cache.get('910210588154671194').send('https://discord.gg/UJ7GGB5J32');
         }
       })
@@ -53,22 +64,31 @@ client.on('message', message => {
         message.crosspost();
     }
     if (message.content === '.werbung'){
-        if (message.member.hasPermission("ADMINISTRATOR")) {
+        if (message.member.permissions.has("ADMINISTRATOR")) {
             message.react('☑️');
-            client.channels.cache.get('910210588154671194').send(embed1);
-            client.channels.cache.get('910210588154671194').send(embed2);
-            client.channels.cache.get('910210588154671194').send(embed3);
-            client.channels.cache.get('910210588154671194').send(embed4);
+            client.channels.cache.get('910210588154671194').send({
+                embeds: [
+                    embed1,
+                    embed2,
+                    embed3,
+                    embed4
+                ]
+            });
             client.channels.cache.get('910210588154671194').send('https://discord.gg/UJ7GGB5J32');
         }
     }
+
     if (message.content === '.test') {
-        if (message.member.hasPermission("ADMINISTRATOR")) {
-            message.channel.send(embed1);
-            message.channel.send(embed2);
-            message.channel.send(embed3);
-            message.channel.send(embed4);
-            message.channel.send('https://discord.gg/UJ7GGB5J32');
+        if (message.member.permissions.has("ADMINISTRATOR")) {
+            message.channel.send({
+                embeds: [
+                    embed1, 
+                    embed2, 
+                    embed3, 
+                    embed4
+                ] 
+            });
+           message.channel.send('https://discord.gg/UJ7GGB5J32');
             }
         }
 })
