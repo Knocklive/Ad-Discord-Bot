@@ -46,8 +46,7 @@ const embed4 = new DiscordJS.MessageEmbed()
     .setTimestamp();
 
 cron.schedule('0 0,6,12,18 * * *', () => {
-    if (member.guild.me.roles.cache.has('917122243346182155')) {
-        client.channels.cache.get('910210588154671194').send({
+    client.channels.cache.get('910210588154671194').send({
             embeds: [
                 embed1,
                 embed2,
@@ -55,9 +54,8 @@ cron.schedule('0 0,6,12,18 * * *', () => {
                 embed4
             ]
         });
-        client.channels.cache.get('910210588154671194').send('https://discord.gg/UJ7GGB5J32');
-        }
-      })
+    client.channels.cache.get('910210588154671194').send('https://discord.gg/UJ7GGB5J32');
+});
     
 client.on('message', message => {
     if (message.channel.id === '910210588154671194') {
@@ -91,6 +89,14 @@ client.on('message', message => {
            message.channel.send('https://discord.gg/UJ7GGB5J32');
             }
         }
+
+    if (message.channel.id === '917070037272117289') {
+        message.react('<a:voteyes:918830715985084416>')
+        .then(
+            message.react('<a:voteno:918830805218906133>')
+        )
+    }
 })
+
 
 client.login(process.env.TOKEN)
